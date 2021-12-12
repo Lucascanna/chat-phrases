@@ -2,14 +2,24 @@
 
 const SPACED_COLON = ' : '
 const SPACE = ' '
+const NEW_LINE = '\n'
 
-module.exports = function parseChat(chatText) {
-  const [mention, sentence] = chatText.split(SPACED_COLON)
+function parseLine(line, isLastLine) {
+  const [mention, sentence] = line.split(SPACED_COLON)
   const [date, type] = mention.split(SPACE)
-  return [{
+  return {
     date,
     mention: mention + SPACED_COLON,
     type: type.toLowerCase(),
-    sentence
-  }]
+    sentence: isLastLine ? sentence : sentence + NEW_LINE
+  }
+}
+
+module.exports = function parseChat(chatText) {
+  const chatLines = chatText.split(NEW_LINE)
+  const lastLine = chatLines.pop()
+  const parsedLines = chatLines.map(chatLine => parseLine(chatLine, false))
+  const lastLineParsed = parseLine(lastLine, true)
+  parsedLines.push(lastLineParsed)
+  return parsedLines
 }
