@@ -1,0 +1,25 @@
+{
+  "name": "chat-phrases",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "./node_modules/.bin/eslint .",
+    "test": "npm run lint && tap -b ./test/*.test.js",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lucascanna/chat-phrases.git"
+  },
+  "author": "Luca Scannapieco",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Lucascanna/chat-phrases/issues"
+  },
+  "homepage": "https://github.com/Lucascanna/chat-phrases#readme",
+  "devDependencies": {
+    "eslint": "^8.4.1",
+    "tap": "^15.1.5"
+  }
+}
