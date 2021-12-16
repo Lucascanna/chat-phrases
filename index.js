@@ -3,7 +3,7 @@
 const SPACE = ' '
 const CUSTOMER = 'customer'
 const AGENT = 'agent'
-const mentionPattern = /(\d\d:\d\d:\d\d [\w\s]+ : )/
+const mentionPattern = /(\d\d:\d\d:\d\d (?:(?:[\w\s]+ : )|(?:\w+ )))/
 
 function parseLine(mention, sentence, customerName) {
   const [date, senderName] = mention.split(SPACE)
