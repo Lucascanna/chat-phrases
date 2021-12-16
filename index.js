@@ -1,25 +1,26 @@
 'use strict'
 
-const SPACED_COLON = ' : '
 const SPACE = ' '
-const NEW_LINE = '\n'
+const mentionPattern = /(\d\d:\d\d:\d\d \w+ : )/
 
-function parseLine(line, isLastLine) {
-  const [mention, sentence] = line.split(SPACED_COLON)
+function parseLine(mention, sentence) {
   const [date, type] = mention.split(SPACE)
   return {
     date,
-    mention: mention + SPACED_COLON,
+    mention,
     type: type.toLowerCase(),
-    sentence: isLastLine ? sentence : sentence + NEW_LINE
+    sentence
   }
 }
 
 module.exports = function parseChat(chatText) {
-  const chatLines = chatText.split(NEW_LINE)
-  const lastLine = chatLines.pop()
-  const parsedLines = chatLines.map(chatLine => parseLine(chatLine, false))
-  const lastLineParsed = parseLine(lastLine, true)
-  parsedLines.push(lastLineParsed)
-  return parsedLines
+  const chatFragments = chatText.split(mentionPattern)
+  return chatFragments.reduce((parsedLines, chatFragment, index) => {
+    if (mentionPattern.test(chatFragment)) {
+      const sentence = chatFragments[index+1]
+      const parsedLine = parseLine(chatFragment, sentence)
+      parsedLines.push(parsedLine)
+    }
+    return parsedLines
+  }, [])
 }
