@@ -1,29 +1,10 @@
 'use strict'
 
-const SPACE = ' '
-const CUSTOMER = 'customer'
-const AGENT = 'agent'
-const mentionPattern = /(\d\d:\d\d:\d\d (?:(?:[\w\s]+ : )|(?:\w+ )))/
+const fs = require('fs')
+const parseChat = require('./src/chatParser')
 
-function parseLine(mention, sentence, customerName) {
-  const [date, senderName] = mention.split(SPACE)
-  return {
-    date,
-    mention,
-    type: senderName === customerName ? CUSTOMER : AGENT,
-    sentence
-  }
-}
+const chatPath = `data/${process.argv[2]}`
+const chatText = fs.readFileSync(chatPath, { encoding: 'utf-8'})
 
-module.exports = function parseChat(chatText) {
-  const [, ...chatFragments] = chatText.split(mentionPattern)
-  const [, customerName] = chatFragments[0].split(SPACE)
-  return chatFragments.reduce((parsedLines, chatFragment, index) => {
-    if (mentionPattern.test(chatFragment)) {
-      const sentence = chatFragments[index+1]
-      const parsedLine = parseLine(chatFragment, sentence, customerName)
-      parsedLines.push(parsedLine)
-    }
-    return parsedLines
-  }, [])
-}
+console.log(parseChat(chatText))
+

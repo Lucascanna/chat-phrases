@@ -1,7 +1,7 @@
 'use strict'
 
 const tap = require('tap')
-const parseChat = require('../index')
+const parseChat = require('../src/chatParser')
 
 tap.test('Parse single sentence', test => {
   const chatText = '14:24:32 Customer : Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
